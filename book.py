@@ -4,6 +4,7 @@ class Book():
     def __init__(self,binary):
         self.binary = str(binary)
 
+#prices for book features
 class Covers(Enum):
     soft = 0
     hard = 1
