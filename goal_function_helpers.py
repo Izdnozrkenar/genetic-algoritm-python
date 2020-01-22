@@ -1,7 +1,7 @@
-def goal_function(book,preferences,preferred_price):
+def goal_function(book,group_data):
     price = total_price(book)
 
-    return price + price_difference(price,preferred_price) + preference_score(book,preferences)
+    return price + price_difference(price,group_data.preferred_price) + preference_score(book,group_data.preference_dictonary)
 
 def total_price(book):
     return cover_price(book[0]) + paper_price(book[1:3]) + font_price(book[3:5])
@@ -40,6 +40,6 @@ def price_difference(price, preferred_price):
 
 def preference_score(book,preferences):
     print(book)
-    return preferences["cover"][book[0]] + preferences["paper"][book[1:3]] + preferences["font"][book[3:5]]
+    return (preferences["cover"][book[0]] + preferences["paper"][book[1:3]] + preferences["font"][book[3:5]])/10
 
 
