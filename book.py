@@ -2,7 +2,10 @@ from enum import Enum
 
 class Book():
     def __init__(self,binary):
-        self.binary = str(binary)
+        self.binary = list(binary)
+
+    def update_binary(self,list_to_update):
+        self.binary = ''.join(list_to_update)
 
 #prices for book features
 class Covers(Enum):
