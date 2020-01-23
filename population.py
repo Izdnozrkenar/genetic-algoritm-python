@@ -1,6 +1,6 @@
 import random, math
 from genotype import Genotype
-from fittness_function_helpers import fittness_function
+from fitness_function_helpers import fitness_function
 
 class Population():
     def __init__(self, size, groups, books):
@@ -12,18 +12,18 @@ class Population():
             genotypes.append(Genotype(books,len(groups)))
 
         self.genotypes = genotypes
-        self.get_fittness_values()
+        self.get_fitness_values()
         self.best_genotype = None
         self.__get_best_genotype()
 
-    def get_fittness_values(self):
+    def get_fitness_values(self):
         fittnes_values = []
         
         for genotype in self.genotypes: 
-            genotype_fittness = 0
+            genotype_fitness = 0
             for i in range(len(self.groups)):
-                genotype_fittness += fittness_function(genotype.solution[i],self.groups[i])
-            fittnes_values.append(genotype_fittness)
+                genotype_fitness += fitness_function(genotype.solution[i],self.groups[i])
+            fittnes_values.append(genotype_fitness)
         
         self.fittnes_values = fittnes_values
 
@@ -51,7 +51,7 @@ class Population():
                 self.genotypes[math.floor(index_to_mutate/15)].update_chromosome(index_to_mutate%3,index_to_mutate%5,"1")
 
         
-        self.get_fittness_values()
+        self.get_fitness_values()
         self.__get_best_genotype()   
 
     

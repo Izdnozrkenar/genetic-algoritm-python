@@ -1,4 +1,4 @@
-def fittness_function(book,group_data):
+def fitness_function(book,group_data):
     price = total_price(book)
 
     return price + price_difference(price,group_data.preferred_price) + preference_score(book,group_data.preference_dictonary)
