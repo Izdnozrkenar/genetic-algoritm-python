@@ -7,8 +7,15 @@ from population import Population
 books_data = get_books_csv_data()
 groups_data = get_groups_csv_data()
 
-pop = Population(5,groups_data,books_data)
+#population size must be at least 2 
+pop = Population(20,groups_data,books_data)
 
 print(pop.best_genotype)
-pop.mutation(0.9)
+pop.tournament_crossing(3)
+print(pop.best_genotype)
+pop.mutation(0.3)
+print(pop.best_genotype)
+pop.random_crossing(2)
+print(pop.best_genotype)
+pop.mutation(0.7)
 print(pop.best_genotype)
