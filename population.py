@@ -67,9 +67,7 @@ class Population():
     def rank_selection(self):
         genotype_fitness_pair = [(self.fitness_values[i],self.genotypes[i]) for i in range(len(self.fitness_values))]
 
-        genotype_fitness_pair.sort(key=lambda fintness_value: fintness_value[0])
-
-        print(genotype_fitness_pair[0])
+        genotype_fitness_pair.sort(key=lambda fintness_value: fintness_value[0],reverse=True)   
 
         self.genotypes = random.choices(self.genotypes,weights=[x for x in reversed(range(1,len(self.genotypes)+1))],k=len(self.genotypes))
         self.get_fitness_values()
