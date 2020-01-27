@@ -9,15 +9,20 @@ books_data = get_books_csv_data()
 groups_data = get_groups_csv_data()
 
 #population size must be at least 2 
-pop = Population(100,groups_data,books_data)
+pop = Population(500,groups_data,books_data)
+
+print(pop.best_genotype)
 
 iterations = []
 best_fitness_val = []
 
 for i in range(20):
     iterations.append(i)
-    pop.mutation(0.3)
+    pop.mutation(0.5)
     best_fitness_val.append(pop.best_genotype[1])
+
+
+print(pop.best_genotype)
 
 plt.plot(iterations,best_fitness_val)
 plt.title('20 mutations', size=14)
