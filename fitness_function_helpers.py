@@ -35,13 +35,11 @@ def font_price(feature):
 
 def price_difference(price, preferred_price):    
 
-    return 10*abs(price - preferred_price)
-
     #escape edge cases => max value get here is 10
-    # if(price == preferred_price or (abs(price - preferred_price) < 1) ):
-    #     return 10
-    # else:
-    #     return 10*abs(1/(abs(price - preferred_price)))
+    if(price == preferred_price or (abs(price - preferred_price) < 1) ):
+        return 10
+    else:
+        return 10*abs(1/(abs(price - preferred_price)))
 
 def preference_score(book,preferences):
     book = "".join(book)

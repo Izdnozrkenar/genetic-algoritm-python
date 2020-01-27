@@ -1,4 +1,4 @@
-import random, math, itertools
+import random, math, itertools, statistics
 from genotype import Genotype
 from fitness_function_helpers import fitness_function
 
@@ -17,21 +17,24 @@ class Population():
         self.__get_best_genotype()
 
     def get_fitness_values(self):
-        fittnes_values = []
+        fitness_values = []
         
         for genotype in self.genotypes: 
             genotype_fitness = 0
             for i in range(len(self.groups)):
                 genotype_fitness += fitness_function(genotype.solution[i],self.groups[i])
-            fittnes_values.append(genotype_fitness)
+            fitness_values.append(genotype_fitness)
         
-        self.fittnes_values = fittnes_values
+        self.fitness_values = fitness_values
 
     def __get_best_genotype(self):
-        contendter = self.genotypes[self.fittnes_values.index(min(self.fittnes_values))].solution,min(self.fittnes_values)
+        contendter = self.genotypes[self.fitness_values.index(min(self.fitness_values))].solution,max(self.fitness_values)
         
-        if(self.best_genotype == None or self.best_genotype[1] > contendter[1]):
+        if(self.best_genotype == None or self.best_genotype[1] < contendter[1]):
             self.best_genotype = contendter
+
+    def get_average_fitness_value(self):
+        return statistics.mean(self.fitness_values)
     
     def print_population(self):
         for genotype in self.genotypes:
@@ -55,18 +58,20 @@ class Population():
         self.__get_best_genotype()   
 
     def roulette_selection(self):
-        new_genotypes = random.choices(self.genotypes,weights=self.fittnes_values,k=len(self.genotypes))
+        new_genotypes = random.choices(self.genotypes,weights=self.fitness_values,k=len(self.genotypes))
 
         self.genotypes = new_genotypes
         self.get_fitness_values()
         self.__get_best_genotype()
 
     def rank_selection(self):
-        genotype_fitness_pair = [(1/self.fittnes_values[i],self.genotypes[i]) for i in range(len(self.fittnes_values))]
+        genotype_fitness_pair = [(self.fitness_values[i],self.genotypes[i]) for i in range(len(self.fitness_values))]
 
         genotype_fitness_pair.sort(key=lambda fintness_value: fintness_value[0])
 
-        self.genotypes = random.choices(self.genotypes,weights=[1/x for x in reversed(range(1,len(self.genotypes)+1))],k=len(self.genotypes))
+        print(genotype_fitness_pair[0])
+
+        self.genotypes = random.choices(self.genotypes,weights=[x for x in reversed(range(1,len(self.genotypes)+1))],k=len(self.genotypes))
         self.get_fitness_values()
         self.__get_best_genotype() 
 
@@ -107,29 +112,29 @@ class Population():
             first_tournament_group = random.choices(self.genotypes,k=random.randint(1,math.floor(len(self.genotypes)/2)))
             second_tournament_group = random.choices(self.genotypes,k=random.randint(1,math.floor(len(self.genotypes)/2)))
             
-            first_fittnes_values = []
-            second_fittnes_values = []
+            first_fitness_values = []
+            second_fitness_values = []
             
             for genotype in first_tournament_group: 
                 genotype_fittnes_value = 0
                 for i in range(len(self.groups)):
                     genotype_fittnes_value += fitness_function(genotype.solution[i],self.groups[i])
-                first_fittnes_values.append([genotype_fittnes_value,genotype])
+                first_fitness_values.append([genotype_fittnes_value,genotype])
 
             for genotype in second_tournament_group: 
                 genotype_fittnes_value = 0
                 for i in range(len(self.groups)):
                     genotype_fittnes_value += fitness_function(genotype.solution[i],self.groups[i])
-                second_fittnes_values.append([genotype_fittnes_value,genotype])
+                second_fitness_values.append([genotype_fittnes_value,genotype])
 
-            first_fittnes_values.sort(key=lambda fintness_value: fintness_value[0])
-            second_fittnes_values.sort(key=lambda fintness_value: fintness_value[0])
+            first_fitness_values.sort(key=lambda fintness_value: fintness_value[0],reverse=True)
+            second_fitness_values.sort(key=lambda fintness_value: fintness_value[0],reverse=True)
 
-            first_parent_index = self.fittnes_values.index(first_fittnes_values[0][0])
-            second_parent_index = self.fittnes_values.index(second_fittnes_values[0][0])
+            first_parent_index = self.fitness_values.index(first_fitness_values[0][0])
+            second_parent_index = self.fitness_values.index(second_fitness_values[0][0])
             
-            first_parent = list(itertools.chain.from_iterable(first_fittnes_values[0][1].solution))
-            second_parent = list(itertools.chain.from_iterable(second_fittnes_values[0][1].solution))
+            first_parent = list(itertools.chain.from_iterable(first_fitness_values[0][1].solution))
+            second_parent = list(itertools.chain.from_iterable(second_fitness_values[0][1].solution))
 
             crossing_point = random.randint(0,len(first_parent))
 
